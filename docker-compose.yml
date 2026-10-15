@@ -1,0 +1,44 @@
+services:
+
+  mysql:
+    image: mysql:8.4
+    container_name: greenx-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: all_tables
+    ports:
+      - "3306:3306"
+    volumes:
+      - greenx_mysql_data:/var/lib/mysql
+    networks:
+      - greenx-network
+
+  backend:
+    image: greenx-backend:1.0
+    container_name: greenx-backend
+    restart: unless-stopped
+    ports:
+      - "8001:8000"
+    depends_on:
+      - mysql
+    networks:
+      - greenx-network
+
+  frontend:
+    image: greenx-frontend:1.2
+    container_name: greenx-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - greenx-network
+
+networks:
+  greenx-network:
+    driver: bridge
+
+volumes:
+  greenx_mysql_data:
