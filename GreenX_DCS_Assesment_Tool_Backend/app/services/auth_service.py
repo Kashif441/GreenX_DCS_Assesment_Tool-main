@@ -1,3 +1,4 @@
+import os
 from datetime import timedelta
 from typing import List
 from fastapi import HTTPException, status
@@ -188,8 +189,8 @@ class AuthService(BaseService):
 
     def send_code(self, email: str, code: str, name_of_user: str):
         try:
-            email_sender = "ahmedkayani786@gmail.com"
-            password = "zdao eyut tgmh tnzg"
+            email_sender = os.getenv("SMTP_EMAIL")
+            password = os.getenv("SMTP_PASSWORD")
 
             email_receiver = email
 
