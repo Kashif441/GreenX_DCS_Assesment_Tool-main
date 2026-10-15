@@ -15,9 +15,14 @@ services:
       - greenx-network
 
   backend:
+    build: ./GreenX_DCS_Assesment_Tool_Backend
     image: greenx-backend:1.0
     container_name: greenx-backend
     restart: unless-stopped
+    env_file:
+      - ./GreenX_DCS_Assesment_Tool_Backend/.env
+    environment:
+      DB_HOST: mysql
     ports:
       - "8001:8000"
     depends_on:
